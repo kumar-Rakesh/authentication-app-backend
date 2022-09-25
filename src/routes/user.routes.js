@@ -5,6 +5,6 @@ const { validate } = require('../mongoose/model/user.model');
 const router = express.Router()
 
 router.get('/:id', validate, getUserById)
-router.patch('/user/edit', validate, editUser)
+router.patch('/:id', validate, editUser)
 
 module.exports = router
