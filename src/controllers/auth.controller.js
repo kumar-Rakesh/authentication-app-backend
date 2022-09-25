@@ -12,7 +12,7 @@ const register = async (req, res) => {
 
         if (password.length === 0 || password !== confirmPassword) return res.status(400).send({ message: 'Bad Request' })
 
-        const ROUNDS = process.env.HASH_ROUNDS
+        const ROUNDS = Number.parseInt(process.env.HASH_ROUNDS)
 
         const hashedPassword = bcrypt.hashSync(password, ROUNDS)
 
@@ -23,6 +23,7 @@ const register = async (req, res) => {
         return res.status(200).send({ id: _id, message: 'User registered successfully' })
 
     } catch (err) {
+        console.log(err)
         return res.status(500).send({ message: 'Internal Server Error' })
     }
 }
@@ -46,7 +47,7 @@ const login = async (req, res) => {
                 expiresIn: "1h"
             }
         )
-        return res.status(200).send({ data: { email: users[0].email, firstName: users[0].firstName, lastName: users[0].lastName }, accessToken: accessToken })
+        return res.status(200).send({ data: { id: users[0]._id }, accessToken: accessToken })
     } catch (err) {
         console.log(err)
         return res.status(500).send({ message: 'Internal Server Error' })
